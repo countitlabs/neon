@@ -1,6 +1,6 @@
 // File: api.h 
 // Description: Allows a get request to any api.
-// Last updated: 01/03/19
+// Last updated: 01/06/19
 
 #include "ArduinoJson.h"
 #include "WiFi101.h"
@@ -44,12 +44,12 @@ class Api {
         String text = root[json_data];
         Serial.println("This is the parsed data: " + text);
 
-        if (text.length() == 0)
-        {
-          Serial.println("Found something!, returning now!");
-          client.stop();
-          return;
-        }
+        // if (text.length() != 0)
+        // {
+        //   Serial.println("Found something!, returning now!");
+        //   client.stop();
+        //   return;
+        // }
         // ISSUE: cannot make constant requests because reponse returns empty after the first request
 
         // Serial.println(text.length());

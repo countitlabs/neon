@@ -1,6 +1,6 @@
-// File: wifi_connection.cpp
+// File: neon.cpp
 // Description: This file allows mkr1000 board connection to a wpa wifi source and makes a get request to the worldclock api.
-// Last updated: 01/03/19
+// Last updated: 01/06/19
 // Libraries added:Arduinojson, WiFi101
 
 #include "SPI.h"

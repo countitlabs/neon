@@ -1,6 +1,6 @@
 // File: network.h 
 // Description: This class allows the connection to a WPA wifi source.
-// Last updated: 01/03/19
+// Last updated: 01/06/19
 
 #include "WiFi101.h"
 
