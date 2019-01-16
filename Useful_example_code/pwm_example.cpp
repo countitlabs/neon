@@ -92,3 +92,38 @@ void loop()
   digitalWrite(4, LOW);
   delay(1000);
 }
+
+
+// -----------------------------------------------------------
+// Example for 5 channels arduin uno wifi rev 2
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(7, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(4, OUTPUT);
+}
+
+void loop()
+{
+  Serial.println("Starting High");
+  digitalWrite(7, HIGH);
+  delay(1000);
+  digitalWrite(6, HIGH);
+  delay(1000);
+  digitalWrite(5, HIGH);
+  delay(1000); // 1 khz aprox to 1 seconds delay
+  digitalWrite(4, HIGH);
+  delay(10000); // 10 khz aprox to 10 seconds delay
+  Serial.println("Starting Low");
+  digitalWrite(7, LOW);
+  delay(1000);
+  digitalWrite(6, LOW);
+  delay(1000);
+  digitalWrite(5, LOW);
+  delay(1000);
+  digitalWrite(4, LOW);
+  delay(1000);
+

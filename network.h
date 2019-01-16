@@ -1,54 +1,80 @@
-// File: network.h 
-// Description: This class allows the connection to a WPA wifi source.
-// Last updated: 01/06/19
+// File: network.h
+// Definition: This class allows network connection for the Arduino Uno Wifi rev2
+// Modified by: Keith Low
 
-#include "WiFi101.h"
+/*
+ This example connects to an unencrypted Wifi network.
+ Then it prints the  MAC address of the Wifi module,
+ the IP address obtained, and other network details.
 
+ created 13 July 2010
+ by dlf (Metodo2 srl)
+ modified 31 May 2012
+ by Tom Igoe
+ */
+#include <SPI.h>
+#include <WiFiNINA.h>
+
+///////please enter your sensitive data in the Secret tab/arduino_secrets.h
 class Network {
-  String ssid;
-  String pass;
-  int wifiStatus = WL_IDLE_STATUS;
+  const char * ssid;       // your network SSID (name)
+  const char * pass;    // your network password (use for WPA, or use as key for WEP)
+  int status = WL_IDLE_STATUS;     // the Wifi radio's status
 
-  public:
-    Network(String wifi_name, String password){
-      ssid = wifi_name;
-      pass = password;
-    }
+public:
+  Network(const char * wifi_name, const char * password){
+    ssid = wifi_name;
+    pass = password;
+  }
+    void networkConnect() {
+      //Initialize serial and wait for port to open:
+      Serial.begin(9600);
+      while (!Serial) {
+        ; // wait for serial port to connect. Needed for native USB port only
+      }
 
-    bool networkConnect() {
-       // check for the presence of the shield:
-      if (WiFi.status() == WL_NO_SHIELD) {
-        Serial.println("WiFi shield not present");
-        // don't continue:
+      // check for the WiFi module:
+      if (WiFi.status() == WL_NO_MODULE) {
+        Serial.println("Communication with WiFi module failed!");
+        // don't continue
         while (true);
       }
 
-      // attempt to connect to WiFi network:
-      Serial.print("SSID: ");
-      Serial.println(ssid);
-      // Attempt to connect 10 times
-      int attempts = 1;
-      while (wifiStatus != WL_CONNECTED && attempts < 6) {
-        Serial.println("Attempt " + String(attempts));
-        // Connect to WPA/WPA2 network. WEP Network requires additional parameter.
-        wifiStatus = WiFi.begin(ssid, pass);
+      String fv = WiFi.firmwareVersion();
+      if (fv < "1.0.0") {
+        Serial.println("Please upgrade the firmware");
+      }
+
+      // attempt to connect to Wifi network:
+      while (status != WL_CONNECTED) {
+        Serial.print("Attempting to connect to WPA SSID: ");
+        Serial.println(ssid);
+        // Connect to WPA/WPA2 network:
+        status = WiFi.begin(ssid, pass);
 
         // wait 10 seconds for connection:
         delay(10000);
-        attempts++;
-
       }
 
-      // Print WiFi status:
-      if ( wifiStatus != WL_CONNECTED ) {
-        Serial.println("Cannot Connect to Network.");
-        return false;
-      } else {
-       Serial.println("Connected.");
-       printCurrentNet();
-       printWifiData();
-       return true;
-      }
+      // you're connected now, so print out the data:
+      Serial.print("You're connected to the network");
+      printCurrentNet();
+      // printWifiData();
+
+    }
+
+    void printWifiData() {
+      // print your board's IP address:
+      IPAddress ip = WiFi.localIP();
+      Serial.print("IP Address: ");
+      Serial.println(ip);
+      Serial.println(ip);
+
+      // print your MAC address:
+      byte mac[6];
+      WiFi.macAddress(mac);
+      Serial.print("MAC address: ");
+      printMacAddress(mac);
     }
 
     void printCurrentNet() {
@@ -74,19 +100,6 @@ class Network {
       Serial.println();
     }
 
-    void printWifiData() {
-      // print your WiFi shield's IP address:
-      IPAddress ip = WiFi.localIP();
-      Serial.print("IP Address: ");
-      Serial.println(ip);
-      Serial.println(ip);
-      
-      byte mac[6];
-      WiFi.macAddress(mac);
-      Serial.print("MAC address: ");
-      printMacAddress(mac);
-    }
-
     void printMacAddress(byte mac[]) {
       for (int i = 5; i >= 0; i--) {
         if (mac[i] < 16) {
@@ -97,6 +110,6 @@ class Network {
           Serial.print(":");
         }
       }
-        Serial.println();
+      Serial.println();
     }
 };
