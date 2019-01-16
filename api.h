@@ -1,17 +1,24 @@
 // File: api.h 
-// Description: Allows a get request to any api.
-// Last updated: 01/06/19
+// Description: This class allows a Arduino Uno Wifi Rev2 to send a HTTPS GET request to any api.
+// The api host has to be entered as the first argument of the class
+// and the query as the second argument, and lastly the json object you are looking to get at the end.
+// Author: Keith Low
+
+//Things to work on:
+//Clean the get request on line 56 - I am getting a lot of garbage make sure to be able to parse it
 
 #include "ArduinoJson.h"
-#include "WiFi101.h"
+#include <WiFiNINA.h>
 
 class Api {
   const char * server;
   String query;
   String json_data;
+  bool printWebData = true;
+  unsigned long byteCount = 0;
 
   public:
-    WiFiClient client;
+    WiFiSSLClient client;
     Api(const char * url_endpoint, String query_new, String json)
     {
       server = url_endpoint;
@@ -20,48 +27,42 @@ class Api {
     }
     void sendGET() //client function to send/receive GET request data.
     {
-      Serial.print("Retrying connection!");
-      if (client.connect(server, 80)) {  //starts client connection, checks for connection
-        Serial.println("connected");
-        client.println("GET " + query + " HTTP/1.0"); // https://hackingmajenkoblog.wordpress.com/2016/02/04/the-evils-of-arduino-strings/
-        Serial.println("GET " + query + " HTTP/1.0");
-        client.println("Host: " + String(server)); // This needs to be changed to save memory
-        client.println("Connection: close"); 
-        client.println(); //end of get request
-      } 
-      else {
-        Serial.println("connection failed"); //error message if no client connect
-        Serial.println();
-        return;
-      }
+      Serial.print("Starting connection!");
+        if (client.connect(server, 443)) {  //starts client connection, checks for connection
+          Serial.println("connected");
+          client.println("GET " + query + " HTTP/1.1"); // https://hackingmajenkoblog.wordpress.com/2016/02/04/the-evils-of-arduino-strings/
+          Serial.println("GET " + query + " HTTP/1.1");
+          client.println("Host: " + String(server)); // This needs to be changed to save memory
+          client.println("Connection: close"); 
+          client.println(); //end of get request
+        }
+        else {
+          Serial.println("connection failed"); //error message if no client connect
+          Serial.println();
+          return;
+        }
       delay(10000);
       String line = "";
       StaticJsonBuffer<5000> jsonBuffer;
       while (client.connected()) {
         line = client.readStringUntil('\n');
         Serial.println("****** This is the response: " + line);
-        JsonObject& root = jsonBuffer.parseObject(line);
-        String text = root[json_data];
-        Serial.println("This is the parsed data: " + text);
-
-        // if (text.length() != 0)
-        // {
-        //   Serial.println("Found something!, returning now!");
-        //   client.stop();
-        //   return;
-        // }
-        // ISSUE: cannot make constant requests because reponse returns empty after the first request
-
-        // Serial.println(text.length());
-        // if (text.length() == 0){
-        //   return;
-        // }
-        // if (!root.success()) {
-        //   Serial.println("parseObject() failed");
-        //   return;
-        // }
+        int len = client.available();
+        if (len > 0) {
+          byte buffer[80];
+          if (len > 80) len = 80;
+          client.read(buffer, len);
+          if (printWebData) {
+            Serial.println("Here is writing");
+            Serial.write(buffer, len); // show in the serial monitor (slows some boards)
+            Serial.println("Here is writing");
+          }
+          byteCount = byteCount + len;
+        }
+        // JsonObject& root = jsonBuffer.parseObject(line);
         // String text = root[json_data];
-        // Serial.println(text);
+        // Serial.println("######## This is the parsed data: " + text);
+
       }
     }
 };
