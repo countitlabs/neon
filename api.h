@@ -14,7 +14,7 @@ class Api {
   const char * server;
   String query;
   String json_data;
-  bool printWebData = true;
+  bool currentLineIsBlank = false;
   unsigned long byteCount = 0;
 
   public:
@@ -25,9 +25,13 @@ class Api {
       query = query_new;
       json_data = json;
     }
-    void sendGET() //client function to send/receive GET request data.
+    String sendGET() //client function to send/receive GET request data.
     {
-      Serial.print("Starting connection!");
+        if (client)
+        {
+          bool currentLineIsBlank = true;
+        }
+        Serial.print("Starting connection!");
         if (client.connect(server, 443)) {  //starts client connection, checks for connection
           Serial.println("connected");
           client.println("GET " + query + " HTTP/1.1"); // https://hackingmajenkoblog.wordpress.com/2016/02/04/the-evils-of-arduino-strings/
@@ -41,28 +45,46 @@ class Api {
           Serial.println();
           return;
         }
-      delay(10000);
-      String line = "";
-      StaticJsonBuffer<5000> jsonBuffer;
-      while (client.connected()) {
-        line = client.readStringUntil('\n');
-        Serial.println("****** This is the response: " + line);
-        int len = client.available();
-        if (len > 0) {
-          byte buffer[80];
-          if (len > 80) len = 80;
-          client.read(buffer, len);
-          if (printWebData) {
-            Serial.println("Here is writing");
-            Serial.write(buffer, len); // show in the serial monitor (slows some boards)
-            Serial.println("Here is writing");
-          }
-          byteCount = byteCount + len;
-        }
-        // JsonObject& root = jsonBuffer.parseObject(line);
-        // String text = root[json_data];
-        // Serial.println("######## This is the parsed data: " + text);
+        delay(2000);
+        while (client.connected())
+        {
+          if (client.available()){
+            char c = client.read();
+            if (c == '\n' && currentLineIsBlank)
+            {
+              // This is after the header. The POST data is in the body.
+              // so read the POST data
+              Serial.println("Reading!");
+              while(client.available())
+              {
+                // Serial.write(client.read());
+                String data = "";
+                data = client.readStringUntil('\n');
+                String text = parseData(data,json_data);
+                Serial.println(text);
+                return text;
 
-      }
+              }
+            }
+            else if (c == '\n')
+            {
+              currentLineIsBlank = true;
+            }
+            else if (c != '\r')
+            {
+              currentLineIsBlank = false;
+            }
+          }
+
+        }
+      Serial.println("Done");
+    }
+
+    String parseData(String data, String json_data)
+    {
+      StaticJsonBuffer<5000> jsonBuffer;
+      JsonObject& root = jsonBuffer.parseObject(data);
+      String text = root["score7"];
+      return text;
     }
 };

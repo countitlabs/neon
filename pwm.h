@@ -4,34 +4,34 @@
 //Author: Keith Low
 
 class PWM {
-	int* pins = new int[5];
-	public:
-		PWM(int* pin_out){
-			for (int i = 0; i < 10; i++){
-				pins[i] = pin_out[i];
-			}
-		}
-		void setOutput(){
-			for (int i = 0; i < 5; i++){
-				if (pins[i] >= 1 && pins[i] <= 7){
-					Serial.print("Setting output for ");
-					Serial.println(pins[i]);
-					delay(2000);
-					pinMode(pins[i],OUTPUT);
-				}
-					
-			}
-			turnOn();
-		}
-		void turnOn(){
-			for (int i = 0; i < 5; i++){
-				if (pins[i] >= 1 && pins[i] <= 7){
-					Serial.print("SENDING HIGH FOR ");
-					Serial.println(pins[i]);
-					delay(2000);
-					digitalWrite(pins[i], HIGH);
-				}
-			}
-		}	
+  int* pins = new int[5];
+  public:
+    PWM(int* pin_out){
+      for (int i = 0; i < 10; i++){
+        pins[i] = pin_out[i];
+      }
+    }
+    void setOutput(){
+      for (int i = 0; i < 5; i++){
+        if (pins[i] >= 1 && pins[i] <= 7){
+          Serial.print("Setting output for ");
+          Serial.println(pins[i]);
+          delay(1000);
+          pinMode(pins[i],OUTPUT);
+        }
+          
+      }
+      turnOn();
+    }
+    void turnOn(){
+      for (int i = 0; i < 5; i++){
+        if (pins[i] >= 1 && pins[i] <= 7){
+          Serial.print("SENDING HIGH FOR ");
+          Serial.println(pins[i]);
+          delay(1000);
+          digitalWrite(pins[i], HIGH);
+        }
+      }
+    } 
 };
 

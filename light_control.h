@@ -25,59 +25,59 @@ class TurnOn {
   float score;
   int* arr = new int[5];
 
-	public:
-	  	TurnOn(float value)
-		  {
-		    score = value;
-		  }
+  public:
+      TurnOn(float value)
+      {
+        score = value;
+      }
 
-		  int* getPin(){
-		    if (score >= 1 && score <= 20)
-		    {
-		    	return writeToArray(4,3,2,0,0);
-		    }
-		    else if (score >= 21 && score <= 30)
-		    {
-		    	return writeToArray(3,4,0,0,0);
-		    }
-		    else if (score >= 31 && score <= 40)
-		    {
-		    	return writeToArray(3,4,5,0,0);
-		    }
-		    else if (score >= 41 && score <= 60)
-		    {
-		    	return writeToArray(4,5,0,0,0);
-		    }
-		    else if (score >= 61 && score <= 90)
-		    {
-		    	return writeToArray(4,0,0,0,0);
-		    }
-		    else if (score >= 91)
-		    {
-		    	return writeToArray(2,4,6,0,0);
-		    }
-		    else if (score == 0)
-		    {
-		    	return writeToArray(0,0,0,0,0);
-		    }
-		    else
-		    {
-		    	return writeToArray(2,3,4,5,6);
-		    }
-		  }
+      int* getPin(){
+        if (score >= 1 && score <= 20)
+        {
+          return writeToArray(4,3,2,0,0);
+        }
+        else if (score >= 21 && score <= 30)
+        {
+          return writeToArray(3,4,0,0,0);
+        }
+        else if (score >= 31 && score <= 40)
+        {
+          return writeToArray(3,4,5,0,0);
+        }
+        else if (score >= 41 && score <= 60)
+        {
+          return writeToArray(4,5,0,0,0);
+        }
+        else if (score >= 61 && score <= 90)
+        {
+          return writeToArray(4,0,0,0,0);
+        }
+        else if (score >= 91)
+        {
+          return writeToArray(2,4,6,0,0);
+        }
+        else if (score == 0)
+        {
+          return writeToArray(0,0,0,0,0);
+        }
+        else
+        {
+          return writeToArray(2,3,4,5,6);
+        }
+      }
 
-		  int* writeToArray(int pin1, int pin2, int pin3, int pin4, int pin5){
-				int* temp = new int[5];
-				temp[0] = pin1;
-		      	temp[1] = pin2;
-				temp[2] = pin3;
-		      	temp[3] = pin4;
-		      	temp[4] = pin5;
-		      	for (int i = 0; i < 4; i++ )
-		      	{
-		      		arr[i] = temp[i];
-		      	}
-		      	return arr;
-		  }
+      int* writeToArray(int pin1, int pin2, int pin3, int pin4, int pin5){
+        int* temp = new int[5];
+        temp[0] = pin1;
+            temp[1] = pin2;
+        temp[2] = pin3;
+            temp[3] = pin4;
+            temp[4] = pin5;
+            for (int i = 0; i < 4; i++ )
+            {
+              arr[i] = temp[i];
+            }
+            return arr;
+      }
 };
 

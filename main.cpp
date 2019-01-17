@@ -11,8 +11,8 @@
 #include "light_control.h";
 #include "pwm.h";
 
-Network Wifi("<WIFI SSID GOES HERE>","<WIFI PASSWORD>");
-Api Test("www.countit.com","/api/office/6f434034-040f-4ac8-b2c6-f19585485b2c/score","challengeScore");
+Network Wifi("<WIFI NAME GOES HERE>","<WIFI PASSWORD GOES HERE>");
+Api Test("www.countit.com","/api/office/6f434034-040f-4ac8-b2c6-f19585485b2c/score","score7");
 
 void setup(){
   Serial.begin(9600);
@@ -24,12 +24,15 @@ void setup(){
 void loop(){
   delay(2000);
   Serial.println("Starting api test");
-  Test.sendGET();
+  String data = Test.sendGET();
+  Serial.println("This is the score: " + data);
+  
+  delay(10000);
 }
 
 void controlChannels(){
-  	TurnOn channels(10);
-  	int* pin_numbers = channels.getPin();
-	PWM signal(pin_numbers);
+    TurnOn channels(10.23);
+    int* pin_numbers = channels.getPin();
+    PWM signal(pin_numbers);
     signal.setOutput();
 }
