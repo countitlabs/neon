@@ -7,14 +7,14 @@ class PWM {
   int* pins = new int[5];
   public:
     PWM(int* pin_out){
-      for (int i = 0; i < 10; i++){
+      for (int i = 0; i < 5; i++){
         pins[i] = pin_out[i];
       }
     }
     void setOutput(){
       for (int i = 0; i < 5; i++){
         if (pins[i] >= 1 && pins[i] <= 7){
-          Serial.print("Setting output for ");
+          Serial.print("SETTING OUTPUT FOR: ");
           Serial.println(pins[i]);
           delay(1000);
           pinMode(pins[i],OUTPUT);
@@ -26,12 +26,12 @@ class PWM {
     void turnOn(){
       for (int i = 0; i < 5; i++){
         if (pins[i] >= 1 && pins[i] <= 7){
-          Serial.print("SENDING HIGH FOR ");
+          Serial.print("SENDING HIGH FOR: ");
           Serial.println(pins[i]);
           delay(1000);
           digitalWrite(pins[i], HIGH);
         }
       }
-    } 
+    }
 };
 
