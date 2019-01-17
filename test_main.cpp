@@ -11,14 +11,14 @@
 #include "light_control.h";
 #include "pwm.h";
 
-Network Wifi("<WIFI NAME GOES HERE>","<WIFI PASSWORD GOES HERE>");
+Network Wifi("<Wifi goes here>","<password goes here>");
 Api Test("www.countit.com","/api/office/6f434034-040f-4ac8-b2c6-f19585485b2c/score","score7");
 
 void setup(){
   Serial.begin(9600);
   Serial.println("Starting network functions");
   Wifi.networkConnect();
-  controlChannels();
+//  controlChannels();
 }
 
 void loop(){
@@ -26,6 +26,13 @@ void loop(){
   Serial.println("Starting api test");
   String data = Test.sendGET();
   Serial.println("This is the score: " + data);
+  
+  float score_val = data.toFloat();
+  TurnOn channels(score_val);
+  int* pin_numbers = channels.getPin();
+  PWM signal(pin_numbers);
+  signal.setOutput();
+  
   
   delay(10000);
 }
@@ -35,37 +42,4 @@ void controlChannels(){
     int* pin_numbers = channels.getPin();
     PWM signal(pin_numbers);
     signal.setOutput();
-}
-
-void initializationSequence(){
-    digitalWrite(2,HIGH);
-    delay(1000);
-    digitalWrite(3,HIGH);
-    delay(1000);
-    digitalWrite(4,HIGH);
-    delay(1000);
-    digitalWrite(5,HIGH);
-    delay(1000);
-    digitalWrite(6,HIGH);
-    delay(5000);
-
-    digitalWrite(2,LOW);
-    digitalWrite(3,LOW);
-    digitalWrite(4,LOW);
-    digitalWrite(5,LOW);
-    digitalWrite(6,LOW);
-    delay(5000);
-
-    digitalWrite(2,HIGH);
-    digitalWrite(3,HIGH);
-    digitalWrite(4,HIGH);
-    digitalWrite(5,HIGH);
-    digitalWrite(6,HIGH);
-    delay(5000);
-
-    digitalWrite(2,LOW);
-    digitalWrite(3,LOW);
-    digitalWrite(4,LOW);
-    digitalWrite(5,LOW);
-    digitalWrite(6,LOW);
 }

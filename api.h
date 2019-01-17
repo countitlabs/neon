@@ -84,7 +84,7 @@ class Api {
     {
       StaticJsonBuffer<5000> jsonBuffer;
       JsonObject& root = jsonBuffer.parseObject(data);
-      String text = root["score7"];
+      String text = root[json_data];
       return text;
     }
 };
