@@ -67,16 +67,11 @@ class TurnOn {
       }
 
       int* writeToArray(int pin1, int pin2, int pin3, int pin4, int pin5){
-        int* temp = new int[5];
-        temp[0] = pin1;
-        temp[1] = pin2;
-        temp[2] = pin3;
-        temp[3] = pin4;
-        temp[4] = pin5;
-        for (int i = 0; i < 5; i++ )
-        {
-          arr[i] = temp[i];
-        }
+        arr[0] = pin1;
+        arr[1] = pin2;
+        arr[2] = pin3;
+        arr[3] = pin4;
+        arr[4] = pin5;
         return arr;
       }
 };
