@@ -25,7 +25,7 @@ class Api {
       query = query_new;
       json_data = json;
     }
-    String sendGET() //client function to send/receive GET request data.
+    float sendGET() //client function to send/receive GET request data.
     {
         if (client)
         {
@@ -60,7 +60,7 @@ class Api {
                 // Serial.write(client.read());
                 String data = "";
                 data = client.readStringUntil('\n');
-                String text = parseData(data,json_data);
+                float text = parseData(data,json_data);
                 Serial.println(text);
                 return text;
 
@@ -79,12 +79,13 @@ class Api {
         }
       Serial.println("Done");
     }
-
-    String parseData(String data, String json_data)
+    float parseData(String data, String json_data)
     {
-      StaticJsonBuffer<5000> jsonBuffer;
+      const size_t capacity = JSON_OBJECT_SIZE(7) + 180;
+      DynamicJsonBuffer jsonBuffer(capacity);
       JsonObject& root = jsonBuffer.parseObject(data);
-      String text = root[json_data];
-      return text;
+      float score = root[json_data];
+      return score;
     }
 };
+
