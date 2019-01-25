@@ -37,11 +37,6 @@ This IOT project was made to control the Count.it Neon light logo depending on d
 ### Instantiation: 
 	* Api <Object_name>(String "<HOST_NAME>",String "QUERY","JSON_OBJECT");
 
-## network.h : Allows wifi connection to wpa2 sources
-
-### Instantiation
-	* Network <Object_name>(String "WIFI_NAME", String "WIFI_PASSWORD");
-
 ## control_sequence.h : Controls all light sequences
 	
 ### Instantiation
@@ -57,4 +52,15 @@ This IOT project was made to control the Count.it Neon light logo depending on d
 ### Instantiation
 	* PWM <Object_name>(int* <array> "pin_numbers");
 
+## access_point.h : Controls access point generation and wifi connection
+
+### Instantiation
+	* AccessPoint <Object_name>("<access point name>","<access point password>");
+
 ## main.h : Controls all main logic
+
+# To Do:
+
+# 1- Take the group id value from access_point.h and set it on the api.h constructor.
+# 2- Investigate wireslesly uploading of code to arduino
+# 3- Save user variables for 5 min intervals everytime the device is shut off - Used so that the user does not need to re enter values unless needed.
