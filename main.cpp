@@ -4,15 +4,18 @@
 // Note: This code is specific for Arduino Uno Wifi Rev2
 // Author: Keith Low
 
+//TODO: take the group id value from access_point.h and set it on the api.h constructor.
+
 #include "SPI.h";
 
 #include "api.h";
-#include "network.h";
 #include "light_control.h";
 #include "pwm.h";
 #include "control_sequence.h";
+#include "access_point.h";
 
-Network Wifi("ASUS","frenchfries");
+AccessPoint ap("<wifi name goes here>","<wifi password goes here>");
+
 Api CountItRequest("www.countit.com","/api/office/6f434034-040f-4ac8-b2c6-f19585485b2c/score","score7");
 ControlSequence Sequence;
 
@@ -20,7 +23,12 @@ void setup(){
   Serial.begin(9600);
   Serial.println("Starting network functions");
 
-  Wifi.networkConnect();
+  ap.startAP(); // Starting accespoint 
+  char * groupId_val;
+  groupId_val = ap.checkAP(); // Group id values 
+
+  //At this point the device should have access to wifi
+  
   Sequence.initializationSequence();
 }
 
