@@ -4,7 +4,7 @@
 // Note: This code is specific for Arduino Uno Wifi Rev2
 // Author: Keith Low
 
-//TODO: take the group id value from access_point.h and set it on the api.h constructor.
+//TODO: Store group id value and wifi into eeprom for 10 minutes if user decides not to re enter, just reuse those values
 
 #include "SPI.h";
 
@@ -37,7 +37,7 @@ void setup(){
 
 void loop(){
   delay(2000);
-  
+
   Serial.println("Starting api test");
   float data = CountItRequest.sendGET();
   Serial.print("This is the score: ");

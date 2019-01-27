@@ -210,7 +210,7 @@ class AccessPoint {
         while (WiFi.status() != WL_CONNECTED) {
           Serial.print("Attempting to connect to SSID: ");
 
-          Serial.println(network_val);
+          Serial.println(network);
 
           network.toCharArray(network_val,40);
           password.toCharArray(password_val,40);
