@@ -21,10 +21,15 @@ class Api {
     WiFiSSLClient client;
     Api(const char * url_endpoint, String query_new, String json)
     {
+      //Empty constructor allow us to have global access via main - void setup() and void loop()
+    }
+    void attach(const char * url_endpoint, String query_new, String json)
+    {
       server = url_endpoint;
       query = query_new;
       json_data = json;
     }
+
     float sendGET() //client function to send/receive GET request data.
     {
         if (client)
