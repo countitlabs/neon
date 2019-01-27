@@ -11,18 +11,18 @@ WiFiServer server(80);
 
 class AccessPoint {
   int status = WL_IDLE_STATUS;
-  boolean readingNetwork = false;
-  boolean readingPassword = false;
-  boolean readingGroupId = false;
-  boolean doneChecking = false;
+  bool readingNetwork = false;
+  bool readingPassword = false;
+  bool readingGroupId = false;
+  bool doneChecking = false;
 
   String password = "";
   String network = "";
   String groupId = "";
 
-  boolean needCredentials = true;
-  boolean needWiFi = false;
-  boolean readyToGo = false;
+  bool needCredentials = true;
+  bool needWiFi = false;
+  bool readyToGo = false;
 
   const char * apssid;
   const char * appass;

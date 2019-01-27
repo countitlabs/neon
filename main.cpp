@@ -16,7 +16,8 @@
 
 AccessPoint ap("<wifi name goes here>","<wifi password goes here>");
 
-Api CountItRequest("www.countit.com","/api/office/6f434034-040f-4ac8-b2c6-f19585485b2c/score","score7");
+Api CountItRequest("","",""); //Using empty constructor to access the object globally on setup() and loop()
+
 ControlSequence Sequence;
 
 void setup(){
@@ -25,7 +26,9 @@ void setup(){
 
   ap.startAP(); // Starting accespoint 
   char * groupId_val;
-  groupId_val = ap.checkAP(); // Group id values 
+  groupId_val = ap.checkAP(); // Group id values
+
+  CountItRequest.attach("www.countit.com","/api/office/" + String(groupId_val) + "/score","score7");
 
   //At this point the device should have access to wifi
   
@@ -34,6 +37,7 @@ void setup(){
 
 void loop(){
   delay(2000);
+  
   Serial.println("Starting api test");
   float data = CountItRequest.sendGET();
   Serial.print("This is the score: ");
