@@ -11,14 +11,16 @@
 // Ish =  Channel 5 or pin 5
 // Circle = Channel 6 or pin 6
 
-// If score >= 1 && score <= 20 turn on [Super] [In] [Active] [!!] ---> Channels 2,3,4
-// If score >= 21 && score <= 30 turn on [In] [Active] ---> Channels 3,4
-// If score >= 31 && score <= 40 turn on [In] [Active] [Ish] ---> 3,4,5
-// If score >= 41 && score <= 60 turn on [Active] [Ish] ---> 4,5
-// If score >= 61 && score <= 90 turn on [Active] ---> 4
-// If score >= 91 turn on [Super] [Active] [!!!] [circle] --- > 2,4,6 
-// If score == 0 nothing is on
-// Initializing state turn on all ---> channels 2,3,4,5,6
+// 1- If score >= 1 && score <= 10 turn on [Super] [In] [Active] [!!] ---> Channels 2,3,4
+// 2- If score >= 11 && score <= 20 turn on [Super] [In] [Active] [Ish] [!!] ---> Channels 2,3,4,5
+// 3- If score >= 21 && score <= 30 turn on [In] [Active] ---> Channels 3,4
+// 4- If score >= 31 && score <= 40 turn on [In] [Active] [Ish] ---> 3,4,5
+// 5- If score >= 41 && score <= 50 turn on [Active] [Ish] ---> 4,5
+// 6- If score >= 51 && score <= 70 turn on [Active] ---> 4
+// 7- If score >= 71 && score <= 90 turn on [Super] [Active] [Ish] [!!!] ---> 2,4,5
+// 8- If score >= 91 turn on [Super] [Active] [!!!] [circle] --- > 2,4,6 
+// 9- If score == 0 nothing is on
+// 10- Initializing state turn on all ---> channels 2,3,4,5,6
 
 
 class TurnOn {
@@ -32,27 +34,35 @@ class TurnOn {
       }
 
       int* getPin(){
-        if (score >= 1 && score <= 20)
+        if (score >= 1 && score <= 10) // [Super] [In] [Active] [!!] ---> Channels 2,3,4
         {
-          return writeToArray(4,3,2,0,0);
+          return writeToArray(2,3,4,0,0);
         }
-        else if (score >= 21 && score <= 30)
+        else if (score >= 11 && score <= 20) // [Super] [In] [Active] [Ish] [!!] ---> Channels 2,3,4,5
         {
-          return writeToArray(3,4,0,0,0);
+          return writeToArray(2,3,4,5,0);
         }
-        else if (score >= 31 && score <= 40)
+        else if (score >= 21 && score <= 30) // [In] [Active] ---> Channels 3,4
         {
           return writeToArray(3,4,5,0,0);
         }
-        else if (score >= 41 && score <= 60)
+        else if (score >= 31 && score <= 40) // [In] [Active] [Ish] ---> 3,4,5
+        {
+          return writeToArray(3,4,5,0,0);
+        }
+        else if (score >= 41 && score <= 50) // [Active] [Ish] ---> 4,5
         {
           return writeToArray(4,5,0,0,0);
         }
-        else if (score >= 61 && score <= 90)
+        else if (score >= 51 && score <= 70) // [Active] ---> 4
         {
           return writeToArray(4,0,0,0,0);
         }
-        else if (score >= 91)
+        else if (score >= 71 && score <= 90) // [Super] [Active] [Ish] [!!!] ---> 2,4,5
+        {
+          return writeToArray(2,4,5,0,0);
+        }
+        else if (score >= 91) // [Super] [Active] [!!!] [circle] --- > 2,4,6 
         {
           return writeToArray(2,4,6,0,0);
         }
@@ -60,7 +70,7 @@ class TurnOn {
         {
           return writeToArray(0,0,0,0,0);
         }
-        else
+        else // if there is something wrong all the lights will be on
         {
           return writeToArray(2,3,4,5,6);
         }
