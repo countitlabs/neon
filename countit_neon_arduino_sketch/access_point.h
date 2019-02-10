@@ -79,7 +79,6 @@ class AccessPoint {
       return groupId_val;
     }
 
-
     void getCredentials() {
       WiFiClient client = server.available();
       if (client) {                            

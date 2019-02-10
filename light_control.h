@@ -22,7 +22,6 @@
 // 9- If score == 0 nothing is on
 // 10- Initializing state turn on all ---> channels 2,3,4,5,6
 
-
 class TurnOn {
   float score;
   int* arr = new int[5];
@@ -83,5 +82,29 @@ class TurnOn {
         arr[3] = pin4;
         arr[4] = pin5;
         return arr;
+      }
+
+      int* copyArray(int * pin_out){
+        int* pins = new int[5];
+        for (int i = 0; i < 5; i++){
+          pins[i] = pin_out[i];
+        }
+        return pins;
+      }
+
+      bool arrayIsSame(int * pins, int * temp_pins){
+        for (int i = 0; i < 5; i++){
+          Serial.print(pins[i]);
+          Serial.print(" ");
+          Serial.println(temp_pins[i]);
+          Serial.println();
+
+          if (pins[i] != temp_pins[i])
+          {
+            return false;
+          }
+        }
+        return true;
+
       }
 };
