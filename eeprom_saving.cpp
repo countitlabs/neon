@@ -41,20 +41,29 @@ class Data{
   char f;
 
   bool completely_done = false;
-  bool reading_group_id;
   bool reading_wifi_name = false;
   bool reading_password = false;
+  bool reading_group_id;
 
   public:
     Data(String group_number, String wifi, String pass)
     {
+      //Empty constructor allow us to have global access via main - void setup() and void loop()
       group_id = "#" + group_number + "!";
       wifi_name = wifi + "@";
       wifi_pass = pass + "*";
     }
 
-    void save_data() {
+    // void attach(String group_number, String wifi, String pass)
+    // {
+      
+    // }
 
+    void initialize_global_variables() {
+      size = group_id.length() + wifi_name.length() + wifi_pass.length();
+    }
+
+    void save_data() {
 
       initialize_global_variables();
 
@@ -92,15 +101,8 @@ class Data{
       }
     }
 
-    void initialize_global_variables()
-    {
-      size = group_id.length() + wifi_name.length() + wifi_pass.length();
-    }
-
-    int found_data()
-    {
-      size = group_id.length() + wifi_name.length() + wifi_pass.length();
-      char val[size];
+    int found_data() {
+      initialize_global_variables();
 
       bool thereIsData = false;
 
@@ -118,15 +120,17 @@ class Data{
           if (data.length() > 5)
           {
             thereIsData = true;
+            Serial.print("This is the data: ");
             Serial.println(data);
           }
         }
       }
+      Serial.print("This is the size: ");
+      Serial.println(data.length());
       return data.length();
     }
 
-    void load_data(int size)
-    {
+    void load_data(int size) {
       char val[size];
       
       Serial.println("reading!");
@@ -184,23 +188,18 @@ class Data{
           }
         }
       }
-
-      Serial.println("RUNNING!");
-      Serial.print("Group id ");
-      Serial.println(group_id_read);
-      Serial.print("Wifi ");
-      Serial.println(wifi_read);
-      Serial.print("Password ");
-      Serial.println(password_read);
     }
+
     String get_group_id()
     {
       return group_id_read;
     }
+
     String get_wifi_name()
     {
       return wifi_read;
     }
+
     String get_wifi_password()
     {
       return password_read;
