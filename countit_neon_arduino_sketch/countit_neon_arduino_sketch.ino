@@ -17,7 +17,7 @@
 #include <elapsedMillis.h>
 
 
-AccessPoint ap("<wifi_name_goes_here>","<password_goes_here>");
+AccessPoint ap("countItNeon","letsrun1234");
 
 Api CountItRequest("","",""); //Using empty constructor to access the object globally on setup() and loop()
 

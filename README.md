@@ -16,8 +16,9 @@ This IOT project was made to control the Count.it Neon light logo depending on d
 # Known Issues with fix:
 
 * Arduino Uno does not use wifi101 library it uses WifiNina library (So search mkr1000 code won't work)
-* When making http GET requests you may get weird errors - Best to do in this case is to update the firmware of the arduino using this tutorial: https://forum.arduino.cc/index.php?topic=579469.0 (Some of the errors may be HTTP error code 301)
 * Also when making an HTTPS request, in other words a server with SSL make sure to use the WiFiSSLClient object instead and port 443.
+* Make sure to install the Hourly build for the arduino ide for best solutions!
+* When making http GET requests you may get weird errors - Best to do in this case is to update the firmware of the arduino using this tutorial: https://forum.arduino.cc/index.php?topic=579469.0 (Some of the errors may be HTTP error code 301)
 
 # References
 
@@ -33,34 +34,13 @@ This IOT project was made to control the Count.it Neon light logo depending on d
 # Documentation:
 
 ## Api.h : Allows Api GET requests
-
-### Instantiation: 
-	* Api <Object_name>(String "<HOST_NAME>",String "QUERY","JSON_OBJECT");
-
 ## control_sequence.h : Controls all light sequences
-	
-### Instantiation
-	* ControlSequence Sequence;
-
 ## light_control.h : Controls pin OutPut logic depending on score values
-
-### Instantiation
-	* TurnOn <Object_name>(float score);
-
 ## pwm.h : Controls Pulse Width Modulation signals to the transformers (High and Low)
-
-### Instantiation
-	* PWM <Object_name>(int* <array> "pin_numbers");
-
 ## access_point.h : Controls access point generation and wifi connection
-
-### Instantiation
-	* AccessPoint <Object_name>("<access point name>","<access point password>");
-
 ## main.h : Controls all main logic
 
 # To Do:
 
-# 1- Take the group id value from access_point.h and set it on the api.h constructor.
-# 2- Investigate wireslesly uploading of code to arduino
-# 3- Save user variables for 5 min intervals everytime the device is shut off - Used so that the user does not need to re enter values unless needed.
+### Investigate wireslesly uploading of code to arduino
+### Save user variables for 5 min intervals everytime the device is shut off - Used so that the user does not need to re enter values unless needed. (eeprom_main.cpp and eeprom_saving.cpp work for Arduino Uno device - Not for Arduino Uno wifi rev2) 
