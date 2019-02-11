@@ -137,10 +137,12 @@ class AccessPoint {
                 client.println();
                 client.println("<html>");
                 client.println("<head>");
-                client.println("<style type=\"text/css\"> body {font-family: sans-serif; margin:50px; padding:20px; line-height: 250% } </style>");
+                client.println("<style type=\"text/css\"> body {background-color: #3E92CC ;font-family: sans-serif; margin:50px; padding:20px; line-height: 250% } </style>");
                 client.println("<title>Arduino Setup</title>");
                 client.println("</head>");
                 client.println("<body>");
+
+                client.println("<h1 style=\"font-family: \"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif; font-size:8vw; color:white; margin-left:100px;\">Count.It Neon Light</h1>");
 
                 client.println("<h2>WIFI CREDENTIALS</h2>");
                 client.print("NETWORK NAME: ");
@@ -154,6 +156,7 @@ class AccessPoint {
                 client.print("<br>");
                 
                 client.print("<button type=\"button\" onclick=\"SendText()\">Enter</button>");
+
                 client.println("</body>");
                 client.println("<script>");
                 client.println("var network = document.querySelector('#network');");
@@ -168,7 +171,13 @@ class AccessPoint {
                 client.println("request.send(null)");
                 client.println("network.value=''");
                 client.println("password.value=''");
-                client.println("groupId.value=''}");
+                client.println("groupId.value=''");
+                client.println("sendTest();}");
+
+                client.println("function sendTest() {");
+                client.println("alert(\"You have succesfully submitted wifi details! Give the device a couple of seconds to connect!\");");
+                client.println("}");
+
                 client.println("</script>");
                 client.println("</html>");
                 client.println();

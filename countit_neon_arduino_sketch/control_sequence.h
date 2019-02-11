@@ -63,8 +63,10 @@ class ControlSequence{
         delay(2000);
     }
     void resetSignAllOff(){
+        Serial.println();
         Serial.println("Reseting Sign!");
         Serial.println("Setting all to HIGH = OFF NEON");
+        Serial.println();
         //The neon sign will be off until signals are sent to it.
         //If HIGH is sent the channel is off
         //If LOW is sent the channel is on
@@ -76,8 +78,10 @@ class ControlSequence{
     }
 
     void changeInApiSequence(){
+        Serial.println();
         Serial.println("Changing sequence!");
         Serial.println("If api is changing sequence should show");
+        Serial.println();
         digitalWrite(6,LOW);
         delay(1000);
         digitalWrite(6,HIGH);
