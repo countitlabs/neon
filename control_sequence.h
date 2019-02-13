@@ -79,8 +79,8 @@ class ControlSequence{
 
     void changeInApiSequence(){
         Serial.println();
-        Serial.println("Pins are different!");
-        Serial.println("Changing sequence is starting!");
+        Serial.println("Changing sequence!");
+        Serial.println("If api is changing sequence should show");
         Serial.println();
         digitalWrite(6,LOW);
         delay(1000);

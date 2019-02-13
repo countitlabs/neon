@@ -23,11 +23,11 @@
 // 10- Initializing state turn on all ---> channels 2,3,4,5,6
 
 class TurnOn {
-  float score;
+  int score;
   int* arr = new int[5];
 
   public:
-      TurnOn(float value)
+      TurnOn(int value)
       {
         score = value;
       }
@@ -94,6 +94,7 @@ class TurnOn {
 
       bool arrayIsSame(int * pins, int * temp_pins){
         for (int i = 0; i < 5; i++){
+
           Serial.print(pins[i]);
           Serial.print(" ");
           Serial.println(temp_pins[i]);
