@@ -14,10 +14,10 @@
 #include "control_sequence.h";
 #include "access_point.h";
 
-#include <elapsedMillis.h>
+#include <elapsedMillis.h> // This library is currently not used 
 
 
-AccessPoint ap("<wifi_name_goes_here>","<password_goes_here>");
+AccessPoint ap("CountItNeon","letsrun1234");
 
 Api CountItRequest("","",""); //Using empty constructor to access the object globally on setup() and loop()
 
@@ -31,8 +31,6 @@ void setup(){
   ap.startAP(); // Starting accespoint 
   char * groupId_val;
   groupId_val = ap.checkAP(); // Group id values
-
-
 
   CountItRequest.attach("www.countit.com","/api/office/" + String(groupId_val) + "/score","score7");
 
@@ -49,11 +47,15 @@ void loop(){
   Serial.print("This is the score: ");
   Serial.println(data);
 
-  controlChannels(data); //Here is where the logic happens
+  int api_value = int(data + 0.5); // This helps to approximate the float value 
+  Serial.print("This is the approx value");
+  Serial.println(api_value);
+
+  controlChannels(api_value); //Here is where the logic happens
   delay(10000);
 }
 
-void controlChannels(float score){
+void controlChannels(int score){
 
     TurnOn channels(score);
     int* pin_numbers = channels.getPin();
@@ -65,7 +67,7 @@ void controlChannels(float score){
     Serial.println(pin_numbers[3]);
 
     int* temp_pins = channels.copyArray(pin_numbers);
-    // temp_pins[3] = 12;
+//    temp_pins[3] = 12;
 
     Serial.println("This is the temp array");
     Serial.println(temp_pins[0]);
