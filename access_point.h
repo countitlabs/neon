@@ -137,25 +137,25 @@ class AccessPoint {
                 client.println();
                 client.println("<html>");
                 client.println("<head>");
-                client.println("<style type=\"text/css\"> body {background-color: #3E92CC ;font-family: sans-serif; margin:50px; padding:20px; line-height: 250% } </style>");
-                client.println("<title>Arduino Setup</title>");
+                client.println("<style type=\"text/css\"> body {background-color: #00adef;font-family: sans-serif; margin:50px; padding:20px; line-height: 250% } </style>");
+                client.println("<title>Count.It Neon Setup</title>");
                 client.println("</head>");
                 client.println("<body>");
 
-                client.println("<h1 style=\"font-family: \"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif; font-size:8vw; color:white; margin-left:100px;\">Count.It Neon Light</h1>");
+                client.println("<h1 style=\"font-family: \"Lucida Sans Unicode\", \"Lucida Grande\", sans-serif; font-size:8vw; color:white; margin-left:100px;\">COUNT.IT NEON</h1>");
 
-                client.println("<h2>WIFI CREDENTIALS</h2>");
-                client.print("NETWORK NAME: ");
+                client.println("<h3>Enter WiFi Credentials</h3>");
+                client.print("<h4>NETWORK NAME: </h4>");
                 client.print("<input id=\"network\"/><br>");
-                client.print("PASSWORD: ");
+                client.print("<h4>PASSWORD: </h4>");
                 client.print("<input id=\"password\"/><br>");
 
-                client.println("<h2>Countit</h2>");
-                client.print("Group ID: ");
+                client.println("<h3>Enter Count.It Group ID</h3>");
+                client.print("<h4>GROUP ID: </h4>");
                 client.print("<input id=\"groupId\"/><br>");
                 client.print("<br>");
                 
-                client.print("<button type=\"button\" onclick=\"SendText()\">Enter</button>");
+                client.print("<button style=background-color:#ffffff;border: 1px solid black;color: black;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;margin: 4px 2px;cursor: pointer  type=\"button\" onclick=\"SendText()\">Submit</button>");
 
                 client.println("</body>");
                 client.println("<script>");
@@ -172,10 +172,10 @@ class AccessPoint {
                 client.println("network.value=''");
                 client.println("password.value=''");
                 client.println("groupId.value=''");
-                client.println("sendTest();}");
+                client.println("sendAlert();}");
 
-                client.println("function sendTest() {");
-                client.println("alert(\"You have succesfully submitted wifi details! Give the device a couple of seconds to connect!\");");
+                client.println("function sendAlert() {");
+                client.println("alert(\"Success! You have submitted your WiFi network credentials and Count.It group ID. Give your sign a moment to connect!\");");
                 client.println("}");
 
                 client.println("</script>");

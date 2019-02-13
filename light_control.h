@@ -43,7 +43,7 @@ class TurnOn {
         }
         else if (score >= 21 && score <= 30) // [In] [Active] ---> Channels 3,4
         {
-          return writeToArray(3,4,5,0,0);
+          return writeToArray(3,4,0,0,0);
         }
         else if (score >= 31 && score <= 40) // [In] [Active] [Ish] ---> 3,4,5
         {
