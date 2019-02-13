@@ -60,7 +60,7 @@ class ControlSequence{
         delay(1000);
 
         resetSignAllOff();
-        delay(2000);
+        delay(1000);
     }
     void resetSignAllOff(){
         Serial.println();

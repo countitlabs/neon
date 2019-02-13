@@ -23,6 +23,9 @@ Api CountItRequest("","",""); //Using empty constructor to access the object glo
 
 ControlSequence Sequence;
 
+int* temp_pins;
+bool isSame = true;
+
 void setup(){
   Serial.begin(9600);
 
@@ -66,7 +69,9 @@ void controlChannels(int score){
     Serial.println(pin_numbers[2]);
     Serial.println(pin_numbers[3]);
 
-    int* temp_pins = channels.copyArray(pin_numbers);
+    isSame = channels.arrayIsSame(pin_numbers, temp_pins);
+
+    temp_pins = channels.copyArray(pin_numbers);
 //    temp_pins[3] = 12;
 
     Serial.println("This is the temp array");
@@ -76,7 +81,7 @@ void controlChannels(int score){
     Serial.println(temp_pins[3]);
 
     Serial.println();
-    bool isSame = channels.arrayIsSame(pin_numbers, temp_pins);
+    
     
     if (!isSame)
     {
