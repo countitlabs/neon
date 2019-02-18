@@ -20,7 +20,7 @@
 // Objects
 //********************************
 
-AccessPoint ap("CountItNeon","letsrun1234",120000);
+AccessPoint ap("CountItNeon","letsrun1234",10000);
 
 Api CountItRequest("","","");
 
@@ -65,6 +65,9 @@ void setup(){
   data_size = eeprom_data.found_data();
   Serial.println(data_size);
 
+  //The addition of all delimeters is = 4 
+  //so if the len of eeprom_data is more than 5 then we have stuff
+
   if (data_size > 5) 
   {
     elapsedMillis timeElapsed; // Starts timer
@@ -95,6 +98,7 @@ void setup(){
       new_group = group;
     } 
     else if (!checkTime) {
+      Serial.println("User inputted something");
       //If checktime is false - Means the user inputted something
       //So we have to save that new value
       groupID = ap.get_groupId();
@@ -150,6 +154,7 @@ void setup(){
 
     CountItRequest.attach("www.countit.com","/api/office/" + new_group + "/score","score7");
   }
+  
   
   Sequence.initializationSequence();
 }
