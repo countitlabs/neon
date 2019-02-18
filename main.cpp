@@ -16,13 +16,11 @@
 
 #include "eeprom_data.h";
 
-#include <elapsedMillis.h> // This library is currently not used 
-
 
 // Objects
 //********************************
 
-AccessPoint ap("CountItNeon","letsrun1234");
+AccessPoint ap("CountItNeon","letsrun1234",120000);
 
 Api CountItRequest("","","");
 
@@ -52,6 +50,12 @@ int data_size;
 String group;
 String wifi;
 String pass;
+bool checkTime;
+
+
+String new_group;
+String new_wifi;
+String new_pass;
 //********************************
 
 void setup(){
@@ -60,9 +64,6 @@ void setup(){
 
   data_size = eeprom_data.found_data();
   Serial.println(data_size);
-
-  //The addition of all delimeters is = 4 
-  //so if the len of eeprom_data is more than 5 then we have stuff
 
   if (data_size > 5) 
   {
@@ -77,25 +78,46 @@ void setup(){
     wifi = eeprom_data.get_wifi_name();
     pass = eeprom_data.get_wifi_password();
 
-    Serial.print("group id: ");
+    Serial.print("Group id eeprom: ");
     Serial.println(group);
-    Serial.print("Wifi name: ");
+    Serial.print("Wifi name eeprom: ");
     Serial.println(wifi);
-    Serial.print("Password: ");
+    Serial.print("Password eeprom: ");
     Serial.println(pass);
-    // Once we get each different parameter 
-    // we go ahead and start the hotspot
-    // if user takes longer than 5 minutes 
-    // we go and try to connect the value
 
-    //try to connect to wifi via wifi and pass variables
+    ap.startAP();
+    checkTime = ap.checkAPWithTimer();
 
-    Serial.println("Attempting direct wifi!");
-    ap.connectDirectlyToWifi(wifi,pass);
+    if (checkTime){
+      Serial.println("Timer is done!");
+      Serial.println("directly connecting to wifi!");
+      ap.connectDirectlyToWifi(wifi,pass);
+      new_group = group;
+    } 
+    else if (!checkTime) {
+      //If checktime is false - Means the user inputted something
+      //So we have to save that new value
+      groupID = ap.get_groupId();
+      password = ap.get_password();
+      network = ap.get_wifiName();
 
-    // Need to start ap and wait 5 minutes 
-    // if 5 minutes passed then go ahead and directly connect to ap.
+      eeprom_data.attach(groupID,network,password);
+      eeprom_data.save_data();
+      data_size = eeprom_data.found_data(); // Gets the new data size 
+      eeprom_data.load_data(data_size);
 
+      new_group = eeprom_data.get_group_id();
+      new_wifi = eeprom_data.get_wifi_name();
+      new_pass = eeprom_data.get_wifi_password();
+
+      Serial.print("Group id: ");
+      Serial.println(new_group);
+      Serial.print("Wifi name: ");
+      Serial.println(new_wifi);
+      Serial.print("Password: ");
+      Serial.println(new_pass);
+    }
+    CountItRequest.attach("www.countit.com","/api/office/" + new_group + "/score","score7");
   }
   else if (data_size < 5)
   {
@@ -123,8 +145,11 @@ void setup(){
     group = eeprom_data.get_group_id();
     wifi = eeprom_data.get_wifi_name();
     pass = eeprom_data.get_wifi_password();
+
+    new_group = group;
+
+    CountItRequest.attach("www.countit.com","/api/office/" + new_group + "/score","score7");
   }
-  CountItRequest.attach("www.countit.com","/api/office/" + group + "/score","score7");
   
   Sequence.initializationSequence();
 }

@@ -135,6 +135,10 @@ class Data{
     }
 
     void load_data(int size) {
+      group_id_read = "";
+      wifi_read = "";
+      password_read = "";
+
       char val[size];
       
       Serial.println("reading!");

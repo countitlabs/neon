@@ -6,6 +6,7 @@
 
 #include <SPI.h>
 #include <WiFiNINA.h>
+#include <elapsedMillis.h> // Timer for eeprom
 
 WiFiServer server(80);
 
@@ -26,15 +27,17 @@ class AccessPoint {
 
   const char * apssid;
   const char * appass;
+  int interval;
 
   char groupId_val[40];
   char network_val[40];
   char password_val[40];
 
   public:
-    AccessPoint(const char * wifi_name, const char * password){
+    AccessPoint(const char * wifi_name, const char * password, int timer_range){
       apssid = wifi_name;
       appass = password;
+      interval = timer_range;
     }
     void startAP() {
       WiFi.end();
@@ -64,6 +67,7 @@ class AccessPoint {
       printAPStatus();  
     }
 
+    //No timer here
     void checkAP() {
       while (!doneChecking){
         if (needCredentials) {
@@ -73,10 +77,36 @@ class AccessPoint {
           getWiFi();
         }
       }
-      // Serial.print("This is the group id: ");
-      // Serial.println(groupId);
-      // groupId.toCharArray(groupId_val,40);
-      // return groupId_val;
+    }
+
+    //Timer for eeprom
+    bool checkAPWithTimer() {
+      elapsedMillis timeElapsed;
+      bool timerIsDone = false;
+
+      while (!doneChecking && !timerIsDone){
+        Serial.print("Ellapsed time: ");
+        Serial.println(timeElapsed);
+
+        if (timeElapsed > interval) {
+          Serial.println("It is working!");
+          timerIsDone = true;
+        } 
+
+        if (needCredentials) {
+          getCredentials();
+        }
+        if (needWiFi) {
+          getWiFi();
+        }
+      }
+      if (timerIsDone) {
+        Serial.println("Timer is done, so we go and run direct connection");
+        return true;
+      } 
+      
+      Serial.println("User submitted something!");
+      return false;
     }
 
     String get_groupId(){
@@ -245,6 +275,7 @@ class AccessPoint {
       delay(1000);
     }
 
+    //Function created to directly connect to wifi with eeprom data
     void connectDirectlyToWifi(String wifi, String wifi_password){
       char wifi_array[40];
       char wifi_password_array[40];
