@@ -64,7 +64,7 @@ class AccessPoint {
       printAPStatus();  
     }
 
-    char * checkAP() {
+    void checkAP() {
       while (!doneChecking){
         if (needCredentials) {
           getCredentials();
@@ -73,10 +73,22 @@ class AccessPoint {
           getWiFi();
         }
       }
-      Serial.print("This is the group id: ");
-      Serial.println(groupId);
-      groupId.toCharArray(groupId_val,40);
-      return groupId_val;
+      // Serial.print("This is the group id: ");
+      // Serial.println(groupId);
+      // groupId.toCharArray(groupId_val,40);
+      // return groupId_val;
+    }
+
+    String get_groupId(){
+      return groupId;
+    }
+
+    String get_password(){
+      return password;
+    }
+
+    String get_wifiName(){
+      return network;
     }
 
     void getCredentials() {
@@ -214,24 +226,50 @@ class AccessPoint {
       if (network == "" or password == "") {
             Serial.println("Invalid WiFi credentials");
             while (true);
-          }
-        while (WiFi.status() != WL_CONNECTED) {
-          Serial.print("Attempting to connect to SSID: ");
+      }
+      while (WiFi.status() != WL_CONNECTED) {
+        Serial.print("Attempting to connect to SSID: ");
 
-          Serial.println(network);
+        Serial.println(network);
 
-          network.toCharArray(network_val,40);
-          password.toCharArray(password_val,40);
+        network.toCharArray(network_val,40);
+        password.toCharArray(password_val,40);
 
-          WiFi.begin(network_val, password_val);
-          delay(10000);
-        }
+        WiFi.begin(network_val, password_val);
+        delay(10000);
+      }
       Serial.println("WiFi connection successful");
       printWiFiStatus();
       needWiFi = false;
       doneChecking = true;
       delay(1000);
     }
+
+    void connectDirectlyToWifi(String wifi, String wifi_password){
+      char wifi_array[40];
+      char wifi_password_array[40];
+
+      if (wifi == "" or wifi_password == "") {
+            Serial.println("Invalid WiFi credentials");
+            while (true);
+      }
+      while (WiFi.status() != WL_CONNECTED) {
+        Serial.print("Attempting to connect to SSID: ");
+
+        Serial.println(wifi);
+
+        wifi.toCharArray(wifi_array,40);
+        wifi_password.toCharArray(wifi_password_array,40);
+
+        WiFi.begin(wifi_array, wifi_password_array);
+        delay(10000);
+      }
+      Serial.println("WiFi connection successful");
+      printWiFiStatus();
+      delay(1000);
+    }
+
+
 
     void printWiFiStatus() {
       Serial.print("SSID: ");

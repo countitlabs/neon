@@ -14,30 +14,117 @@
 #include "control_sequence.h";
 #include "access_point.h";
 
+#include "eeprom_data.h";
+
 #include <elapsedMillis.h> // This library is currently not used 
 
 
+// Objects
+//********************************
+
 AccessPoint ap("CountItNeon","letsrun1234");
 
-Api CountItRequest("","",""); //Using empty constructor to access the object globally on setup() and loop()
+Api CountItRequest("","","");
 
 ControlSequence Sequence;
 
+Data eeprom_data("","","");
+
+//********************************
+
+//Global Variables:
+//********************************
+//Light Control
 int* temp_pins;
 bool isSame = true;
+//********************************
+
+//********************************
+//AccesPoint
+String groupID;
+String network;
+String password;
+//********************************
+
+//********************************
+//eeprom data
+int data_size;
+String group;
+String wifi;
+String pass;
+//********************************
 
 void setup(){
   Serial.begin(9600);
-
   Serial.println("Starting network functions");
 
-  ap.startAP(); // Starting accespoint 
-  char * groupId_val;
-  groupId_val = ap.checkAP(); // Group id values
+  data_size = eeprom_data.found_data();
+  Serial.println(data_size);
 
-  CountItRequest.attach("www.countit.com","/api/office/" + String(groupId_val) + "/score","score7");
+  //The addition of all delimeters is = 4 
+  //so if the len of eeprom_data is more than 5 then we have stuff
 
-  //At this point the device should have access to wifi
+  if (data_size > 5) 
+  {
+    elapsedMillis timeElapsed; // Starts timer
+
+    Serial.println("There is data!");
+    
+    eeprom_data.load_data(data_size);
+    delay(2000);
+
+    group = eeprom_data.get_group_id();
+    wifi = eeprom_data.get_wifi_name();
+    pass = eeprom_data.get_wifi_password();
+
+    Serial.print("group id: ");
+    Serial.println(group);
+    Serial.print("Wifi name: ");
+    Serial.println(wifi);
+    Serial.print("Password: ");
+    Serial.println(pass);
+    // Once we get each different parameter 
+    // we go ahead and start the hotspot
+    // if user takes longer than 5 minutes 
+    // we go and try to connect the value
+
+    //try to connect to wifi via wifi and pass variables
+
+    Serial.println("Attempting direct wifi!");
+    ap.connectDirectlyToWifi(wifi,pass);
+
+    // Need to start ap and wait 5 minutes 
+    // if 5 minutes passed then go ahead and directly connect to ap.
+
+  }
+  else if (data_size < 5)
+  {
+    //if the eeprom is empty we go and start hotspot
+    //and capture values there
+    //we then go ahead and save those value captured!
+    //In .attach() function -> Hotspot values
+
+    Serial.println("There is no data!");
+    Serial.println("So I will proceed to save the data after you input in the ap!");
+
+    ap.startAP();
+    ap.checkAP();
+
+    groupID = ap.get_groupId();
+    password = ap.get_password();
+    network = ap.get_wifiName();
+
+    eeprom_data.attach(groupID,network,password); // Populates object with new values
+
+    eeprom_data.save_data();
+    data_size = eeprom_data.found_data(); // Gets the new data size 
+    eeprom_data.load_data(data_size);
+
+    group = eeprom_data.get_group_id();
+    wifi = eeprom_data.get_wifi_name();
+    pass = eeprom_data.get_wifi_password();
+  }
+  CountItRequest.attach("www.countit.com","/api/office/" + group + "/score","score7");
   
   Sequence.initializationSequence();
 }
@@ -72,7 +159,6 @@ void controlChannels(int score){
     isSame = channels.arrayIsSame(pin_numbers, temp_pins);
 
     temp_pins = channels.copyArray(pin_numbers);
-//    temp_pins[3] = 12;
 
     Serial.println("This is the temp array");
     Serial.println(temp_pins[0]);
@@ -85,11 +171,9 @@ void controlChannels(int score){
     
     if (!isSame)
     {
-      //If the arrays are not the same we blink
       Sequence.resetSignAllOff();
       Sequence.changeInApiSequence();
     }
-    // otherwise we don't blink at all
 
     PWM signal(pin_numbers);
     signal.turnOn();
@@ -97,38 +181,6 @@ void controlChannels(int score){
     delay(5000);
     
 }
-
-// void testing_function(){
-//   if (test.found_data() > 5) //The addition of all delimeters is = 4 so if the len of test is more than 5 then we have stuff
-//   {
-//     Data eeprom_data("","","");
-//     Serial.println("There is data!");
-//     int len = test.found_data();
-//     test.load_data(len);
-//     delay(2000);
-//     String group = test.get_group_id();
-//     String wifi = test.get_wifi_name();
-//     String pass = test.get_wifi_password();
-//     Serial.print("group id: ");
-//     Serial.println(group);
-//     Serial.print("Wifi name: ");
-//     Serial.println(wifi);
-//     Serial.print("Password: ");
-//     Serial.println(pass);
-
-//     elapsedMillis timeElapsed; // This starts the counter
-
-//     // if timeElapsed > 300000 then input the data in to the 
-
-//   }
-//   else if (test.found_data() < 5)
-//   {
-//     Serial.println("There is no data!");
-//     Serial.println("So I will proceed to save the data!");
-//     test.save_data();
-//   }
-// }
-
 
 //This functions are for testing data types of variables.
 
