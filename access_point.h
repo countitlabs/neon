@@ -6,6 +6,7 @@
 
 #include <SPI.h>
 #include <WiFiNINA.h>
+#include <elapsedMillis.h> // Timer for eeprom
 
 WiFiServer server(80);
 
@@ -26,15 +27,17 @@ class AccessPoint {
 
   const char * apssid;
   const char * appass;
+  int interval;
 
   char groupId_val[40];
   char network_val[40];
   char password_val[40];
 
   public:
-    AccessPoint(const char * wifi_name, const char * password){
+    AccessPoint(const char * wifi_name, const char * password, int timer_range){
       apssid = wifi_name;
       appass = password;
+      interval = timer_range;
     }
     void startAP() {
       WiFi.end();
@@ -64,7 +67,8 @@ class AccessPoint {
       printAPStatus();  
     }
 
-    char * checkAP() {
+    //No timer here
+    void checkAP() {
       while (!doneChecking){
         if (needCredentials) {
           getCredentials();
@@ -73,10 +77,48 @@ class AccessPoint {
           getWiFi();
         }
       }
-      Serial.print("This is the group id: ");
-      Serial.println(groupId);
-      groupId.toCharArray(groupId_val,40);
-      return groupId_val;
+    }
+
+    //Timer for eeprom
+    bool checkAPWithTimer() {
+      elapsedMillis timeElapsed;
+      bool timerIsDone = false;
+
+      while (!doneChecking && !timerIsDone){
+        Serial.print("Ellapsed time: ");
+        Serial.println(timeElapsed);
+
+        if (timeElapsed > interval) {
+          Serial.println("It is working!");
+          timerIsDone = true;
+        } 
+
+        if (needCredentials) {
+          getCredentials();
+        }
+        if (needWiFi) {
+          getWiFi();
+        }
+      }
+      if (timerIsDone) {
+        Serial.println("Timer is done, so we go and run direct connection");
+        return true;
+      } 
+      
+      Serial.println("User submitted something!");
+      return false;
+    }
+
+    String get_groupId(){
+      return groupId;
+    }
+
+    String get_password(){
+      return password;
+    }
+
+    String get_wifiName(){
+      return network;
     }
 
     void getCredentials() {
@@ -214,24 +256,51 @@ class AccessPoint {
       if (network == "" or password == "") {
             Serial.println("Invalid WiFi credentials");
             while (true);
-          }
-        while (WiFi.status() != WL_CONNECTED) {
-          Serial.print("Attempting to connect to SSID: ");
+      }
+      while (WiFi.status() != WL_CONNECTED) {
+        Serial.print("Attempting to connect to SSID: ");
 
-          Serial.println(network);
+        Serial.println(network);
 
-          network.toCharArray(network_val,40);
-          password.toCharArray(password_val,40);
+        network.toCharArray(network_val,40);
+        password.toCharArray(password_val,40);
 
-          WiFi.begin(network_val, password_val);
-          delay(10000);
-        }
+        WiFi.begin(network_val, password_val);
+        delay(10000);
+      }
       Serial.println("WiFi connection successful");
       printWiFiStatus();
       needWiFi = false;
       doneChecking = true;
       delay(1000);
     }
+
+    //Function created to directly connect to wifi with eeprom data
+    void connectDirectlyToWifi(String wifi, String wifi_password){
+      char wifi_array[40];
+      char wifi_password_array[40];
+
+      if (wifi == "" or wifi_password == "") {
+            Serial.println("Invalid WiFi credentials");
+            while (true);
+      }
+      while (WiFi.status() != WL_CONNECTED) {
+        Serial.print("Attempting to connect to SSID: ");
+
+        Serial.println(wifi);
+
+        wifi.toCharArray(wifi_array,40);
+        wifi_password.toCharArray(wifi_password_array,40);
+
+        WiFi.begin(wifi_array, wifi_password_array);
+        delay(10000);
+      }
+      Serial.println("WiFi connection successful");
+      printWiFiStatus();
+      delay(1000);
+    }
+
+
 
     void printWiFiStatus() {
       Serial.print("SSID: ");

@@ -1,3 +1,4 @@
+// Example code for device timer
 // needs the following library elapsedMilis v 1.0.4
 
 #include <elapsedMillis.h>
@@ -23,3 +24,8 @@ void loop()
     Serial.println("10 seconds have passed!");
   }
 }
+
+
+//300000 = 5 minutes
+
+//180000 = 3 minutes

@@ -48,16 +48,15 @@ class Data{
   public:
     Data(String group_number, String wifi, String pass)
     {
-      //Empty constructor allow us to have global access via main - void setup() and void loop()
-      group_id = "#" + group_number + "!";
-      wifi_name = wifi + "@";
-      wifi_pass = pass + "*";
+
     }
 
-    // void attach(String group_number, String wifi, String pass)
-    // {
-      
-    // }
+    void attach(String group_number, String wifi, String pass)
+    { 
+       group_id = "#" + group_number + "!";
+       wifi_name = wifi + "@";
+       wifi_pass = pass + "*";
+    }
 
     void initialize_global_variables() {
       size = group_id.length() + wifi_name.length() + wifi_pass.length();
@@ -102,7 +101,6 @@ class Data{
     }
 
     int found_data() {
-      initialize_global_variables();
 
       bool thereIsData = false;
 
@@ -115,14 +113,20 @@ class Data{
         b += 1;
         f = EEPROM.read(b);
         data += (f);
+        Serial.println(data);
         if (f == '*')
         {
-          if (data.length() > 5)
+          if (data.length() > 5) // Make sure the data is formatted in that way
           {
             thereIsData = true;
             Serial.print("This is the data: ");
             Serial.println(data);
           }
+        }
+        else if (data == 000) //check if the devices is empty
+        {
+          Serial.println("Its empty");
+          return 0;
         }
       }
       Serial.print("This is the size: ");
@@ -131,6 +135,10 @@ class Data{
     }
 
     void load_data(int size) {
+      group_id_read = "";
+      wifi_read = "";
+      password_read = "";
+
       char val[size];
       
       Serial.println("reading!");
@@ -190,6 +198,15 @@ class Data{
       }
     }
 
+    void clean_eeprom()
+    {
+      Serial.println("Clearing eeprom everything to zero!");
+      for (int i = 0 ; i < 255 ; i++) {
+        EEPROM.write(i, 0);
+        Serial.println(i);
+      }
+    }
+
     String get_group_id()
     {
       return group_id_read;
@@ -205,5 +222,3 @@ class Data{
       return password_read;
     }
 };
-
-
