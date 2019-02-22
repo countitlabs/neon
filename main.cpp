@@ -20,7 +20,7 @@
 // Objects
 //********************************
 
-AccessPoint ap("CountItNeon","letsrun1234",10000);
+AccessPoint ap("CountItNeon","letsrun1234",10000); //We want 5 minutes of timer which is = 300000 miliseconds
 
 Api CountItRequest("","","");
 

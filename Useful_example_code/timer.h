@@ -1,3 +1,4 @@
+// Example code for device timer
 // needs the following library elapsedMilis v 1.0.4
 
 #include <elapsedMillis.h>

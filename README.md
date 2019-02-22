@@ -47,6 +47,10 @@ This IOT project was made to control the Count.it Neon light logo depending on d
 * eeprom_data.h : Controls read and write into eeprom memory chip
 * main.h : Controls all main logic
 
+# Notes:
+
+* Make sure the EEPROM memory is cleaned to all 0's before testing
+
 # To Do:
 
 * Investigate wireslesly uploading of code to arduino

@@ -4,9 +4,6 @@
 // and the query as the second argument, and lastly the json object you are looking to get at the end.
 // Author: Keith Low
 
-//Things to work on:
-//Clean the get request on line 56 - I am getting a lot of garbage make sure to be able to parse it
-
 #include "ArduinoJson.h"
 #include <WiFiNINA.h>
 

@@ -1,27 +1,22 @@
+//File: eeprom_data.h
+//Description: This class allows reading and writing the eeprom persistent memory chip
+//Author: Keith Low
+
+//Instructions:
+
 //Save group id:
-
-// Start with #<group_id>! end with exclamation mark
-
+// - Start with #<group_id>! end with exclamation mark
 //To save wifi:
-
-// Read until there is an ! and write <wifi_name>@ end with @ mark
-
+// - Read until there is an ! and write <wifi_name>@ end with @ mark
 //To save password:
-
-// Read until there is an @ and write <Password>* end with * mark
-
+// - Read until there is an @ and write <Password>* end with * mark
 // ie : #d4313b24-ab5f-42ef-aba9-527b84757000!asus@frenchfries*
 
 //To read:
-
 //Group id read for # and end with !
 //wifi_name read for ! and end with @
 //password read for @ and end with *
 
-    // The user will input once the data will be saved!
-    // ** Function that checks the device and if there is anything written into the eeprom return true
-    // If the user restarts the device, the device should check if there is any data in eeprom
-    // If there is data wait 10 minutes, and if nothing happens - Proceed with that data.
 
 #include <EEPROM.h>
 
