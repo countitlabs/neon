@@ -70,8 +70,6 @@ void setup(){
 
   if (data_size > 5) 
   {
-    elapsedMillis timeElapsed; // Starts timer
-
     Serial.println("There is data!");
     
     eeprom_data.load_data(data_size);
@@ -146,9 +144,12 @@ void setup(){
     data_size = eeprom_data.found_data(); // Gets the new data size 
     eeprom_data.load_data(data_size);
 
+
+    Serial.println("This is the new data from the eeprom!");
+
     group = eeprom_data.get_group_id();
     wifi = eeprom_data.get_wifi_name();
-    pass = eeprom_data.get_wifi_password();
+    pass = eeprom_data.get_wifi_password(); //NOT PARSING
 
     new_group = group;
 

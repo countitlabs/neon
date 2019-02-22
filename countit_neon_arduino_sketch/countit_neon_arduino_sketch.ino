@@ -168,7 +168,7 @@ void loop(){
   Serial.println(data);
 
   int api_value = int(data + 0.5); // This helps to approximate the float value 
-  Serial.print("This is the approx value");
+  Serial.print("This is the approx value ");
   Serial.println(api_value);
 
   controlChannels(api_value); //Here is where the logic happens
