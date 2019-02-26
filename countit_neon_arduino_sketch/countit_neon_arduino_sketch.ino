@@ -4,8 +4,6 @@
 // Note: This code is specific for Arduino Uno Wifi Rev2
 // Author: Keith Low
 
-//TODO: Store group id value and wifi into eeprom for 10 minutes if user decides not to re enter, just reuse those values
-
 #include "SPI.h";
 
 #include "api.h";
@@ -13,50 +11,63 @@
 #include "pwm.h";
 #include "control_sequence.h";
 #include "access_point.h";
-
 #include "eeprom_data.h";
 
+#include "config.h";
 
-// Objects
-//********************************
 
-AccessPoint ap("CountItNeon","letsrun1234",10000);
 
-Api CountItRequest("","","");
+//#################################
+//###### GLOBAL OBJECTS ###########
+//#################################
 
-ControlSequence Sequence;
+AccessPoint ap(Config_CountItHotSpotName, Config_CountItHotSpotPassword , Config_CountItHotSpotTimer); //We want 5 minutes of timer which is = 300000 miliseconds
+
+Api CountItRequest("","",""); //Object constructor is empty to be global - Check attach() function for constructor functionality
 
 Data eeprom_data("","","");
 
-//********************************
+ControlSequence Sequence;
 
-//Global Variables:
+//#################################
+//#### END OF GLOBAL OBJECTS ######
+//#################################
+
+// -----------------------------------------------------------------
+
+//#################################
+//########GLOBAL VARIBLES:#########
+//#################################
+
 //********************************
-//Light Control
+//LIGHT CONTROL
 int* temp_pins;
 bool isSame = true;
-//********************************
 
 //********************************
-//AccesPoint
+//ACCESS-POINT
 String groupID;
 String network;
 String password;
-//********************************
 
 //********************************
-//eeprom data
+//EEPROM DATA
 int data_size;
+bool checkTime;
+
 String group;
 String wifi;
 String pass;
-bool checkTime;
-
-
 String new_group;
 String new_wifi;
 String new_pass;
 //********************************
+
+//#################################
+//#### END OF GLOBAL VARIBLES:#####
+//#################################
+
+// -----------------------------------------------------------------
 
 void setup(){
   Serial.begin(9600);
@@ -66,12 +77,10 @@ void setup(){
   Serial.println(data_size);
 
   //The addition of all delimeters is = 4 
-  //so if the len of eeprom_data is more than 5 then we have stuff
+  //so if the len of eeprom_data is more than 5 then we have some data in it.
 
   if (data_size > 5) 
   {
-    elapsedMillis timeElapsed; // Starts timer
-
     Serial.println("There is data!");
     
     eeprom_data.load_data(data_size);
@@ -98,9 +107,10 @@ void setup(){
       new_group = group;
     } 
     else if (!checkTime) {
-      Serial.println("User inputted something");
       //If checktime is false - Means the user inputted something
       //So we have to save that new value
+      Serial.println("User inputted something");
+
       groupID = ap.get_groupId();
       password = ap.get_password();
       network = ap.get_wifiName();
@@ -112,7 +122,7 @@ void setup(){
 
       new_group = eeprom_data.get_group_id();
       new_wifi = eeprom_data.get_wifi_name();
-      new_pass = eeprom_data.get_wifi_password();
+      new_pass = eeprom_data.get_wifi_password(); //There is an issue when parsing password - Current issue doesn't affect device 
 
       Serial.print("Group id: ");
       Serial.println(new_group);
@@ -121,7 +131,6 @@ void setup(){
       Serial.print("Password: ");
       Serial.println(new_pass);
     }
-    CountItRequest.attach("www.countit.com","/api/office/" + new_group + "/score","score7");
   }
   else if (data_size < 5)
   {
@@ -146,15 +155,16 @@ void setup(){
     data_size = eeprom_data.found_data(); // Gets the new data size 
     eeprom_data.load_data(data_size);
 
+    Serial.println("This is the new data from the eeprom!");
+
     group = eeprom_data.get_group_id();
     wifi = eeprom_data.get_wifi_name();
-    pass = eeprom_data.get_wifi_password();
+    pass = eeprom_data.get_wifi_password(); //There is an issue when parsing password - Current issue doesn't affect device 
 
     new_group = group;
 
-    CountItRequest.attach("www.countit.com","/api/office/" + new_group + "/score","score7");
   }
-  
+  CountItRequest.attach("www.countit.com","/api/office/" + new_group + "/score", Config_JsonObjectToParseFor);
   
   Sequence.initializationSequence();
 }
@@ -162,16 +172,17 @@ void setup(){
 void loop(){
   delay(2000);
 
-  Serial.println("Starting api test");
+  Serial.println("Starting api request");
   float data = CountItRequest.sendGET();
   Serial.print("This is the score: ");
   Serial.println(data);
 
   int api_value = int(data + 0.5); // This helps to approximate the float value 
-  Serial.print("This is the approx value ");
+  Serial.print("This is the approx value: ");
   Serial.println(api_value);
+  Serial.println();
 
-  controlChannels(api_value); //Here is where the logic happens
+  controlChannels(api_value);
   delay(10000);
 }
 
@@ -180,24 +191,11 @@ void controlChannels(int score){
     TurnOn channels(score);
     int* pin_numbers = channels.getPin();
 
-    Serial.println("This is the array");
-    Serial.println(pin_numbers[0]);
-    Serial.println(pin_numbers[1]);
-    Serial.println(pin_numbers[2]);
-    Serial.println(pin_numbers[3]);
-
     isSame = channels.arrayIsSame(pin_numbers, temp_pins);
 
     temp_pins = channels.copyArray(pin_numbers);
 
-    Serial.println("This is the temp array");
-    Serial.println(temp_pins[0]);
-    Serial.println(temp_pins[1]);
-    Serial.println(temp_pins[2]);
-    Serial.println(temp_pins[3]);
-
     Serial.println();
-    
     
     if (!isSame)
     {

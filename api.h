@@ -18,7 +18,7 @@ class Api {
     WiFiSSLClient client;
     Api(const char * url_endpoint, String query_new, String json)
     {
-      
+      //Empty constructor to allow global initialization of object on main
     }
     void attach(const char * url_endpoint, String query_new, String json)
     {
