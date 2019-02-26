@@ -1,27 +1,15 @@
-//Save group id:
+// File: eeprom_data.h 
+// Description: This class allows read and write into the EEPROM chip
+// Author: Keith Low
 
+// Save group id:
 // Start with #<group_id>! end with exclamation mark
-
-//To save wifi:
-
+// To save wifi:
 // Read until there is an ! and write <wifi_name>@ end with @ mark
-
-//To save password:
-
+// To save password:
 // Read until there is an @ and write <Password>* end with * mark
-
 // ie : #d4313b24-ab5f-42ef-aba9-527b84757000!asus@frenchfries*
 
-//To read:
-
-//Group id read for # and end with !
-//wifi_name read for ! and end with @
-//password read for @ and end with *
-
-    // The user will input once the data will be saved!
-    // ** Function that checks the device and if there is anything written into the eeprom return true
-    // If the user restarts the device, the device should check if there is any data in eeprom
-    // If there is data wait 10 minutes, and if nothing happens - Proceed with that data.
 
 #include <EEPROM.h>
 
@@ -46,13 +34,11 @@ class Data{
   bool reading_group_id;
 
   public:
-    Data(String group_number, String wifi, String pass)
-    {
+    Data(String group_number, String wifi, String pass) {
 
     }
 
-    void attach(String group_number, String wifi, String pass)
-    { 
+    void attach(String group_number, String wifi, String pass) { 
        group_id = "#" + group_number + "!";
        wifi_name = wifi + "@";
        wifi_pass = pass + "*";
@@ -198,8 +184,7 @@ class Data{
       }
     }
 
-    void clean_eeprom()
-    {
+    void clean_eeprom() {
       Serial.println("Clearing eeprom everything to zero!");
       for (int i = 0 ; i < 255 ; i++) {
         EEPROM.write(i, 0);
@@ -207,18 +192,15 @@ class Data{
       }
     }
 
-    String get_group_id()
-    {
+    String get_group_id() {
       return group_id_read;
     }
 
-    String get_wifi_name()
-    {
+    String get_wifi_name() {
       return wifi_read;
     }
 
-    String get_wifi_password()
-    {
+    String get_wifi_password() {
       return password_read;
     }
 };

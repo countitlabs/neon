@@ -45,6 +45,7 @@ This IOT project was made to control the Count.it Neon light logo depending on d
 * pwm.h : Controls Pulse Width Modulation signals to the transformers (High and Low)
 * access_point.h : Controls access point generation and wifi connection
 * eeprom_data.h : Controls read and write into eeprom memory chip
+* config.h : Controls all main configuration of device
 * main.h : Controls all main logic
 
 # Notes:
