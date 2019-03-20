@@ -16,11 +16,11 @@ class Api {
 
   public:
     WiFiSSLClient client;
-    Api(const char * url_endpoint, String query_new, String json)
+    Api(const char * url_endpoint, const String& query_new, const String& json)
     {
       //Empty constructor to allow global initialization of object on main
     }
-    void attach(const char * url_endpoint, String query_new, String json)
+    void attach(const char * url_endpoint, const String& query_new, const String& json)
     {
       server = url_endpoint;
       query = query_new;
@@ -65,7 +65,6 @@ class Api {
                 float text = parseData(data,json_data);
                 Serial.println(text);
                 return text;
-
               }
             }
             else if (c == '\n')
@@ -81,12 +80,21 @@ class Api {
         }
       Serial.println("Done");
     }
-    float parseData(String data, String json_data)
+    float parseData(const String& data, const String& json_data)
     {
-      const size_t capacity = JSON_OBJECT_SIZE(7) + 180;
-      DynamicJsonBuffer jsonBuffer(capacity);
-      JsonObject& root = jsonBuffer.parseObject(data);
-      float score = root[json_data];
+      //  const size_t capacity = JSON_OBJECT_SIZE(7) + 120;
+      //  DynamicJsonDocument doc(capacity);  
+      StaticJsonDocument<500> doc;
+
+      DeserializationError error = deserializeJson(doc, data);
+      if (error) {
+        Serial.print("DesearilizationJson() failed with code");
+        Serial.println(error.c_str());
+      };
+      Serial.print("This is the size of the buffer: ");
+      Serial.println(doc.size());
+      float score = doc[json_data];
+
       return score;
     }
 };

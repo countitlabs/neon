@@ -276,7 +276,7 @@ class AccessPoint {
     }
 
     //Function created to directly connect to wifi with eeprom data
-    void connectDirectlyToWifi(String wifi, String wifi_password){
+    void connectDirectlyToWifi(const String& wifi, const String& wifi_password){
       char wifi_array[40];
       char wifi_password_array[40];
 

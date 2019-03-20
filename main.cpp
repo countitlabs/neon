@@ -14,7 +14,7 @@
 #include "eeprom_data.h";
 
 #include "config.h";
-
+#include <MemoryFree.h>
 
 
 //#################################
@@ -71,6 +71,8 @@ String new_pass;
 
 void setup(){
   Serial.begin(9600);
+  Serial.println("Initial free memory: ");
+  Serial.println(freeMemory());
   Serial.println("Starting network functions");
 
   data_size = eeprom_data.found_data();
@@ -171,24 +173,34 @@ void setup(){
 
 void loop(){
   delay(2000);
+  Serial.print("Before calling main functionality freeMemory()=");
+  Serial.println(freeMemory());
+  neonMainFunctionality();
+  Serial.print("END calling main functionality freeMemory()=");
+  Serial.println(freeMemory());
+  delay(1000);
+}
 
-  Serial.println("Starting api request");
+void neonMainFunctionality(){
+
   float data = CountItRequest.sendGET();
+
   Serial.print("This is the score: ");
   Serial.println(data);
 
-  int api_value = int(data + 0.5); // This helps to approximate the float value 
+  int api_value = round(data);
   Serial.print("This is the approx value: ");
   Serial.println(api_value);
   Serial.println();
 
   controlChannels(api_value);
-  delay(10000);
+
 }
 
 void controlChannels(int score){
 
     TurnOn channels(score);
+
     int* pin_numbers = channels.getPin();
 
     isSame = channels.arrayIsSame(pin_numbers, temp_pins);
