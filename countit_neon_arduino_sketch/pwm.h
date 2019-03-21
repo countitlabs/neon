@@ -6,7 +6,7 @@
 //LOW should turn on the sign
 
 class PWM {
-  int pins[5]; //needs to be changed to save mem
+  int pins[5];
   public:
     PWM(int* pin_out){
       for (int i = 0; i < 5; i++){

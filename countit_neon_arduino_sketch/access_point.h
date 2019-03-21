@@ -67,7 +67,7 @@ class AccessPoint {
       printAPStatus();  
     }
 
-    //No timer here
+    //  No timer here
     void checkAP() {
       while (!doneChecking){
         if (needCredentials) {
@@ -79,7 +79,7 @@ class AccessPoint {
       }
     }
 
-    //Timer for eeprom
+    //  Timer for eeprom
     bool checkAPWithTimer() {
       elapsedMillis timeElapsed;
       bool timerIsDone = false;
@@ -275,7 +275,7 @@ class AccessPoint {
       delay(1000);
     }
 
-    //Function created to directly connect to wifi with eeprom data
+    //  Function created to directly connect to wifi with eeprom data
     void connectDirectlyToWifi(const String& wifi, const String& wifi_password){
       char wifi_array[40];
       char wifi_password_array[40];

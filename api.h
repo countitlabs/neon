@@ -27,23 +27,23 @@ class Api {
       json_data = json;
     }
 
-    float sendGET() //client function to send/receive GET request data.
+    float sendGET() //  client function to send/receive GET request data.
     {
         if (client)
         {
           bool currentLineIsBlank = true;
         }
         Serial.print("Starting connection!");
-        if (client.connect(server, 443)) {  //starts client connection, checks for connection
+        if (client.connect(server, 443)) {  //  starts client connection, checks for connection
           Serial.println("connected");
-          client.println("GET " + query + " HTTP/1.1"); // https://hackingmajenkoblog.wordpress.com/2016/02/04/the-evils-of-arduino-strings/
+          client.println("GET " + query + " HTTP/1.1"); //  https://hackingmajenkoblog.wordpress.com/2016/02/04/the-evils-of-arduino-strings/
           Serial.println("GET " + query + " HTTP/1.1");
           client.println("Host: " + String(server)); // This needs to be changed to save memory
           client.println("Connection: close"); 
           client.println(); //end of get request
         }
         else {
-          Serial.println("connection failed"); //error message if no client connect
+          Serial.println("connection failed"); // error message if no client connect
           Serial.println();
           return;
         }
@@ -82,8 +82,8 @@ class Api {
     }
     float parseData(const String& data, const String& json_data)
     {
-      //  const size_t capacity = JSON_OBJECT_SIZE(7) + 120;
-      //  DynamicJsonDocument doc(capacity);  
+//    const size_t capacity = JSON_OBJECT_SIZE(7) + 120;
+//    DynamicJsonDocument doc(capacity);  
       StaticJsonDocument<500> doc;
 
       DeserializationError error = deserializeJson(doc, data);
