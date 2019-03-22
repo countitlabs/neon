@@ -25,6 +25,7 @@ This IOT project was made to control the Count.it Neon light logo depending on d
 * Make sure to install the Hourly build for the arduino ide for best solutions!
 * When making http GET requests you may get weird errors - Best to do in this case is to update the firmware of the arduino using this tutorial: https://forum.arduino.cc/index.php?topic=579469.0 (Some of the errors may be HTTP error code 301)
 * Also, make sure to update the megaAvr Boards to the version mentioned above - In boards manager (You may get issues with the eeprom not working properly if that isn't in the latest update)
+* Useful library for memory management: http://playground.arduino.cc/Code/AvailableMemory
 
 # References
 

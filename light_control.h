@@ -24,7 +24,8 @@
 
 class TurnOn {
   int score;
-  int* arr = new int[5];
+  int arr[5];
+  int pins[5];
 
   public:
       TurnOn(int value)
@@ -85,7 +86,6 @@ class TurnOn {
       }
 
       int* copyArray(int * pin_out){
-        int* pins = new int[5];
         for (int i = 0; i < 5; i++){
           pins[i] = pin_out[i];
         }
@@ -106,6 +106,5 @@ class TurnOn {
           }
         }
         return true;
-
       }
 };

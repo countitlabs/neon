@@ -6,7 +6,7 @@
 //LOW should turn on the sign
 
 class PWM {
-  int* pins = new int[5];
+  int pins[5];
   public:
     PWM(int* pin_out){
       for (int i = 0; i < 5; i++){
@@ -15,7 +15,7 @@ class PWM {
     }
     void turnOn(){
       for (int i = 0; i < 5; i++){
-        if (pins[i] >= 1 && pins[i] <= 7){
+        if (pins[i] > 1 && pins[i] < 7){
           Serial.print("SENDING LOW FOR: ");
           Serial.println(pins[i]);
           delay(1000);
