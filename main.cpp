@@ -191,7 +191,7 @@ void loop(){
   Serial.print("END calling main functionality freeMemory()=");
   Serial.println(freeMemory());
   
-  delay(10000);
+  delay(28000);
 }
 
 void neonMainFunctionality(){

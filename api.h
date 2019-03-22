@@ -94,7 +94,6 @@ class Api {
       Serial.print("This is the size of the buffer: ");
       Serial.println(doc.size());
       float score = doc[json_data];
-
       return score;
     }
 };
