@@ -20,7 +20,7 @@
 // ############# JSONPARSER CONFIG ##########
 // ##########################################
 
-#define Config_JsonObjectToParseFor "score7"
+#define Config_JsonObjectToParseFor "score1"
 
 // ##########################################
 // ###### END OF JSONPARSER CONFIG ##########

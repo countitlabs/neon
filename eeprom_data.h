@@ -187,7 +187,7 @@ class Data{
     void clean_eeprom() {
       Serial.println("Clearing eeprom everything to zero!");
       for (int i = 0 ; i < 255 ; i++) {
-        EEPROM.write(i, 0);
+        EEPROM.write(i, 000);
         Serial.println(i);
       }
     }

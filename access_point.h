@@ -27,14 +27,14 @@ class AccessPoint {
 
   const char * apssid;
   const char * appass;
-  int interval;
+  unsigned long interval; // Has to be unsinged long because it cannot hold more than 60,000 milis with int
 
   char groupId_val[40];
   char network_val[40];
   char password_val[40];
 
   public:
-    AccessPoint(const char * wifi_name, const char * password, int timer_range){
+    AccessPoint(const char * wifi_name, const char * password, unsigned long timer_range){
       apssid = wifi_name;
       appass = password;
       interval = timer_range;
@@ -88,7 +88,7 @@ class AccessPoint {
         Serial.print("Ellapsed time: ");
         Serial.println(timeElapsed);
 
-        if (timeElapsed > interval) {
+        if (timeElapsed >= interval) {
           Serial.println("It is working!");
           timerIsDone = true;
         } 
@@ -253,6 +253,9 @@ class AccessPoint {
     }
 
     void getWiFi () {
+
+      network.replace("%20"," "); // Cleans if there is a space between the network name
+
       if (network == "" or password == "") {
             Serial.println("Invalid WiFi credentials");
             while (true);
@@ -279,6 +282,8 @@ class AccessPoint {
     void connectDirectlyToWifi(const String& wifi, const String& wifi_password){
       char wifi_array[40];
       char wifi_password_array[40];
+
+      wifi.replace("%20"," "); // Cleans if there is a space between the network name
 
       if (wifi == "" or wifi_password == "") {
             Serial.println("Invalid WiFi credentials");
