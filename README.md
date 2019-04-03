@@ -26,6 +26,7 @@ This IOT project was made to control the Count.it Neon light logo depending on d
 * When making http GET requests you may get weird errors - Best to do in this case is to update the firmware of the arduino using this tutorial: https://forum.arduino.cc/index.php?topic=579469.0 (Some of the errors may be HTTP error code 301)
 * Also, make sure to update the megaAvr Boards to the version mentioned above - In boards manager (You may get issues with the eeprom not working properly if that isn't in the latest update)
 * Useful library for memory management: http://playground.arduino.cc/Code/AvailableMemory
+* Elapsedmilis how to use: https://github.com/pfeerick/elapsedMillis/wiki
 
 # References
 
@@ -36,7 +37,7 @@ This IOT project was made to control the Count.it Neon light logo depending on d
 3. Arduino Uno Wifi Rev2 Docs
 	* https://store.arduino.cc/usa/arduino-uno-wifi-rev2
 4. Count.It Api
-	* https://www.countit.com/api/office/6f434034-040f-4ac8-b2c6-f19585485b2c/score
+	* https://www.countit.com/api/office/GroupId_goes_here/score
 
 # Documentation:
 
@@ -55,5 +56,7 @@ This IOT project was made to control the Count.it Neon light logo depending on d
 
 # To Do:
 
-* Investigate wireslesly uploading of code to arduino
+* Investigate wireslesly uploading of code to arduino (NOT A PRIORITY)
+* Fix eeprom password parsing on main.cpp lines 135 and 173 (Doesn't affect functionality of device - NOT A PRIORITY)
+* Modularize EEPROM delimiters (Current delimiters: #, ! , @ , Asterisk)
 
